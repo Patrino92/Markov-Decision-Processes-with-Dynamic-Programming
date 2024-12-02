@@ -26,8 +26,24 @@ class Dynamic_Programming:
         V_s = np.zeros(env.n_states)
     
         ## IMPLEMENT YOUR VALUE ITERATION ALGORITHM HERE
-        print("You still need to implement value iteration!")
-    
+
+        while True:
+            delta = 0
+            for state in range(env.n_states):
+                max_val = 0
+                curr_state_val = V_s[state]
+                for action in env.actions:
+                    next_state, reward = env.transition_function(state, action)
+                    next_state_val = V_s[next_state]
+                    max_val = max(max_val, reward + gamma * next_state_val)
+                V_s[state] = max_val
+                delta = max(delta, abs(curr_state_val - V_s[state]))
+                print(delta)
+            if delta < theta:
+                break
+
+        # Add π
+
         self.V_s = V_s
         return
 
@@ -57,10 +73,7 @@ class Dynamic_Programming:
             # Compute action values
             if table == 'V' and self.V_s is not None:
                 ## IMPLEMENT ACTION VALUE ESTIMATION FROM self.V_s HERE !!!
-                print("You still need to implement greedy action selection from the value table self.V_s!")
                 greedy_action = None # replace this!
-
-                
             
             elif table == 'Q' and self.Q_sa is not None:
                 ## IMPLEMENT ACTION VALUE ESTIMATION FROM self.Q_sa here !!!
