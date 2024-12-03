@@ -24,13 +24,12 @@ class Dynamic_Programming:
         print("Starting Value Iteration (VI)")
         # initialize value table
         V_s = np.zeros(env.n_states)
-    
-        ## IMPLEMENT YOUR VALUE ITERATION ALGORITHM HERE
 
+        ## IMPLEMENT YOUR VALUE ITERATION ALGORITHM HERE
         while True:
             delta = 0
-            for state in range(env.n_states):
-                max_val = 0
+            for state in env.states:
+                max_val = -float("inf")
                 curr_state_val = V_s[state]
                 for action in env.actions:
                     next_state, reward = env.transition_function(state, action)
@@ -38,12 +37,11 @@ class Dynamic_Programming:
                     max_val = max(max_val, reward + gamma * next_state_val)
                 V_s[state] = max_val
                 delta = max(delta, abs(curr_state_val - V_s[state]))
-                print(delta)
             if delta < theta:
                 break
-
+            print(delta)
         # Add π
-
+        # P_s = np.argmax(V_s)
         self.V_s = V_s
         return
 
@@ -57,37 +55,57 @@ class Dynamic_Programming:
         Q_sa = np.zeros([env.n_states,env.n_actions])
 
         ## IMPLEMENT YOUR Q-VALUE ITERATION ALGORITHM HERE
-        print("You still need to implement Q-value iteration!")
-
+        while True:
+            delta = 0
+            for state in env.states:
+                for action in env.actions:
+                    next_state, reward = env.transition_function(state, action)
+                    curr_state_val = Q_sa[state, action]
+                    max_val = -float("inf")
+                    for new_action in env.actions:
+                        new_state_val = Q_sa[next_state, new_action]
+                        max_val = max(max_val, new_state_val)
+                    Q_sa[state, action] = reward + gamma * max_val
+                    delta = max(delta, abs(curr_state_val - Q_sa[state, action]))
+            if delta < theta:
+                break
+        # Add π
+        # P_s = np.argmax(Q_sa)
         self.Q_sa = Q_sa
         return
                 
     def execute_policy(self,env,table='V'):
-        ## Execute the greedy action, starting from the initial state
+        # Execute the greedy action, starting from the initial state
         env.reset_agent()
         print("Start executing. Current map:") 
         env.print_map()
         while not env.terminal:
-            current_state = env.get_current_state() # this is the current state of the environment, from which you will act
+            # This is the current state of the environment, from which you will act
+            current_state = env.get_current_state()
             available_actions = env.actions
             # Compute action values
             if table == 'V' and self.V_s is not None:
+
                 ## IMPLEMENT ACTION VALUE ESTIMATION FROM self.V_s HERE !!!
-                greedy_action = None # replace this!
-            
+                greedy_action = None
+                max_val = -float("inf")
+                for action in available_actions:
+                    next_state, reward = env.transition_function(current_state, action)
+                    next_state_val = reward + self.V_s[next_state]
+                    if max_val < next_state_val:
+                        max_val = next_state_val
+                        greedy_action = action
+
             elif table == 'Q' and self.Q_sa is not None:
+
                 ## IMPLEMENT ACTION VALUE ESTIMATION FROM self.Q_sa here !!!
-                
-                print("You still need to implement greedy action selection from the state-action value table self.Q_sa!")
-                greedy_action = None # replace this!
-                
-                
+                greedy_action = np.argmax(self.Q_sa[current_state])
+
             else:
                 print("No optimal value table was detected. Only manual execution possible.")
                 greedy_action = None
 
-
-            # ask the user what he/she wants
+            # Ask the user what he/she wants
             while True:
                 if greedy_action is not None:
                     print('Greedy action= {}'.format(greedy_action))    
@@ -132,4 +150,3 @@ if __name__ == '__main__':
     optimal_Q_sa = DP.Q_value_iteration(env)
     input('Press enter to start execution of optimal policy according to Q')
     DP.execute_policy(env, table='Q') # execute the optimal policy
-
