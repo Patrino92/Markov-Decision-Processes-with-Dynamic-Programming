@@ -1,0 +1,25 @@
+4.
+a) 10000*2^30
+b) 10000*2^30*32 = 10000*2^30*2^5 = 10000*2^35 bits
+   10000*2^30*4 = 10000*2^30*2^2 = 10000*2^32 bytes
+c) 1 GB = 2^30 bytes
+   (10000*2^32)/2^30 = 40000 GB = 40 TB
+   No, my laptop does not have that much memory storage.
+d) Curse of dimensionality refers to the exponential growth in the complexity. The aspect of our 
+   problem that causes it is each key that we find, as we have the option to either take it or not, 
+   which doubles the number of possible states.
+
+5.
+a) The depth for the shortest path towards the goal is 20. For the BFS we move to all 4 directions for
+   each step in the path. Hence, we estimate that the time complexity is approximate to 4^20, as we do
+   not always move to all 4 directions and pick the shortest path.
+b) The dynamic approach is faster as the time complexity will be approximately N*states*actions = N*64*
+   4 = N*256, where N is the number of iterations for delta to become less than theta. This number will
+   be way less than the time complexity of BFS on prison.txt and Dynamic Programming approach will be
+   way faster.
+c) Depending on the dynamic programming approach (either value iteration or Q value iteration) it is 
+   either number of states (In case of prison.txt = 64) or states*actions (In case of prison.txt = 64*4). For DFS
+   it only depends on the depth of the shortest path (so in the terms of prison.txt = 20), because in the memory
+   the only thing that will be stored is a path from beginning to the goal. Hence in terms of memory requirements,
+   dfs is much better because it does not need to store anything else than the result (path) and in Dynamic
+   Programming it is needed to store the value table.
