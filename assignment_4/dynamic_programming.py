@@ -53,7 +53,6 @@ class Dynamic_Programming:
         #             max_val = value
         #             max_action = action
         #     optimal_policy[s] = max_action
-        print(V_s)
         return
 
     def Q_value_iteration(self, env, gamma=1.0, theta=0.001):
@@ -84,7 +83,6 @@ class Dynamic_Programming:
         # for state in env.states:
         #     max_action = max(env.actions, key=lambda action: Q[state][action])
         #     optimal_policy[state] = max_action
-        print(Q_sa)
         return
 
     def execute_policy(self, env, table='V'):
