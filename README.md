@@ -25,7 +25,7 @@ This project solves maze-based Markov Decision Processes (MDPs) using dynamic pr
 
 ## Contributors
 - **Kacper Nizielski**
-- **Emmanouil Zagoriti**
+- **Emmanouil Zagoritis**
 
 ## References
 - Thomas Moerland, part of Symbolic AI course, Leiden University
